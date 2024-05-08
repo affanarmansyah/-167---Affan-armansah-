@@ -1,0 +1,92 @@
+    .main {
+        height: 100vh;
+    }
+
+    .sidebar {
+        background: #4c4949;
+        color: #fff;
+    }
+
+    .content {
+        padding: 30px
+    }
+
+    .sidebar a {
+        color: #fff;
+        display: block;
+        text-decoration: none;
+        padding: 20px 10px;
+    }
+
+    .sidebar a:hover {
+        background-color: rgb(128, 91, 91);
+    }
+
+    .active {
+        background-color: #000;
+        border-right: solid 8px orange;
+    }
+
+    .card-data {
+        border: solid 1px;
+        padding: 20px 50px;
+        color: #fff;
+    }
+
+    .card-data.books {
+        background-color: teal;
+    }
+
+    .card-data.category {
+        background-color: rgb(140, 74, 3);
+    }
+
+    .card-data.user {
+        background-color: rgb(2, 104, 21);
+    }
+
+    .card-data i {
+        font-size: 80px;
+    }
+
+    .card-desc {
+        font-size: 30px;
+    }
+
+    .card-count {
+        font-size: 30px;
+    }
+
+    body .login {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-image: url('storage/cover/library.jpg');
+        /* Ganti URL gambar sesuai dengan gambar yang Anda inginkan */
+        background-size: cover;
+        background-position: center;
+        backdrop-filter: blur(4px);
+        /* Menambahkan efek blur */
+    }
+
+    .card {
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-bodys {
+        padding: 2rem;
+        background-color: rgba(207, 152, 88, 0.5);
+        /* Transparansi putih pada card */
+    }
+
+    .btn-primary {
+        background-color: rgb(16, 108, 205);
+        /* Warna tombol login */
+        border-color: #007bff;
+    }
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+        /* Warna tombol login saat dihover */
+        border-color: #0056b3;
+    }
