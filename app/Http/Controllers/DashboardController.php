@@ -15,7 +15,7 @@ class DashboardController extends Controller
         $books = Book::count();
         $categories = Category::count();
         $users = User::count();
-        $rentlog = RentLogs::with(['user', 'book'])->get();
+        $rentlog = RentLogs::with(['user', 'book'])->where('approval_status', 'approved')->get();
         return view('dashboard', [
             'book_count' => $books,
             'categoy_count' => $categories,

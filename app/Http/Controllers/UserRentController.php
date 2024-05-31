@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Book;
+use App\Models\PendingRent;
 use App\Models\RentLogs;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,9 @@ class UserRentController extends Controller
 {
     public function index()
     {
+        $rentalsPendingApproval = PendingRent::all();
         $books = Book::all();
-        return view('user-rent', ['books' => $books]);
+        return view('profile.rent', ['books' => $books, 'rentalsPendingApproval' => $rentalsPendingApproval]);
     }
 
     public function store(Request $request)
@@ -40,7 +42,7 @@ class UserRentController extends Controller
             return redirect('user-rent');
         }
 
-        $count = RentLogs::where('user_id', $user_id)->where('actual_return_date', null)->count();
+        $count = RentLogs::where('user_id', $user_id)->where('approval_status', 'approved')->where('actual_return_date', null)->count();
         if ($count >= 3) {
             Session::flash('message', 'Cannot rent, the book has limit');
             Session::flash('alert-class', 'alert-danger');
@@ -50,12 +52,8 @@ class UserRentController extends Controller
         try {
             DB::beginTransaction();
 
-            // Update status buku menjadi 'not available'
-            $book->status = 'not available';
-            $book->save();
-
-            // Tambahkan catatan peminjaman baru
-            RentLogs::create([
+            // Tambahkan catatan peminjaman sementara dengan status 'pending'
+            PendingRent::create([
                 'user_id' => $user_id,
                 'book_id' => $request->book_id,
                 'rent_date' => $rent_date,
@@ -64,7 +62,7 @@ class UserRentController extends Controller
 
             DB::commit();
 
-            Session::flash('message', 'Book rental was successful');
+            Session::flash('message', 'Book rental request has been submitted and is pending approval.');
             Session::flash('alert-class', 'alert-success');
             return redirect('user-rent');
         } catch (\Throwable $th) {
@@ -74,6 +72,7 @@ class UserRentController extends Controller
     }
 
 
+
     public function return()
     {
         // Mendapatkan ID pengguna yang terautentikasi saat ini
@@ -81,13 +80,14 @@ class UserRentController extends Controller
 
         // Mengambil data buku yang dipinjam oleh pengguna yang sedang login
         $rentlog = RentLogs::where('user_id', $user_id)
+            ->where('approval_status', 'approved')
             ->where('actual_return_date', '=', null)
             ->with('book') // Mengambil relasi buku
             ->get();
 
 
         // Mengembalikan tampilan dengan data buku yang dipinjam
-        return view('user-return-book', ['rentlog' => $rentlog]);
+        return view('profile.return', ['rentlog' => $rentlog]);
     }
 
     public function returnbook(Request $request)

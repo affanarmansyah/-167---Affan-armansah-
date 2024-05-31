@@ -18,13 +18,13 @@ class BooksController extends Controller
         Debugbar::info([1]);
         $book = Book::all();
         $bookDeleted = Book::onlyTrashed()->get();
-        return view('books', ["book" => $book, "bookDeleted" => $bookDeleted]);
+        return view('books.books', ["book" => $book, "bookDeleted" => $bookDeleted]);
     }
 
     public function add()
     {
         $categories = Category::all();
-        return view('book-add', ['categories' => $categories]);
+        return view('books.add', ['categories' => $categories]);
     }
 
     public function create(request $request)
@@ -51,7 +51,7 @@ class BooksController extends Controller
     {
         $book = Book::where('slug', $slug)->first();
         $categories = Category::all();
-        return view('book-edit', ['book' => $book, 'categories' => $categories]);
+        return view('books.edit', ['book' => $book, 'categories' => $categories]);
     }
 
     public function update(request $request, $slug)
@@ -100,11 +100,12 @@ class BooksController extends Controller
             ->get();
 
         $rentLogs = RentLogs::whereIn('user_id', $users->pluck('id'))
+            ->where('approval_status', 'approved')
             ->whereNull('actual_return_date')
             ->with(['user', 'book'])
             ->get();
 
-        return view('book-return', ['users' => $users, 'rentLogs' => $rentLogs]);
+        return view('books.return', ['users' => $users, 'rentLogs' => $rentLogs]);
     }
 
 
@@ -138,5 +139,16 @@ class BooksController extends Controller
             Session::flash('alert-class', 'alert-danger');
             return redirect('book-return');
         }
+    }
+
+    public function getbook($id)
+    {
+        $books = RentLogs::where('user_id', $id)
+            ->where('approval_status', 'approved')
+            ->whereNull('actual_return_date')
+            ->with('book')
+            ->get()
+            ->pluck('book');
+        return response()->json($books);
     }
 }

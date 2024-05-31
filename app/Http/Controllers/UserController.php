@@ -13,27 +13,27 @@ class UserController extends Controller
     public function profile()
     {
         $auth_id = Auth::user()->id;
-        $rentlog = RentLogs::with(['user', 'book'])->where('user_id', $auth_id)->get();
-        return view('profile', ['rentlog' => $rentlog]);
+        $rentlog = RentLogs::with(['user', 'book'])->where('user_id', $auth_id)->where('approval_status', 'approved')->get();
+        return view('profile.profile', ['rentlog' => $rentlog]);
     }
 
     public function index()
     {
         $users = User::where(['status' => 'active', 'role_id' => 2])->get();
         $deleteUser = User::onlyTrashed()->get();
-        return view('user', ['users' => $users, 'deleteUser' => $deleteUser]);
+        return view('users.user', ['users' => $users, 'deleteUser' => $deleteUser]);
     }
 
     public function registered()
     {
         $registeredUser = User::where(['status' => 'inactive', 'role_id' => 2])->get();
-        return view('registered-user', ['registeredUser' => $registeredUser]);
+        return view('users.registered', ['registeredUser' => $registeredUser]);
     }
 
     public function edit()
     {
         $auth = Auth::user();
-        return view('edit-user', ['auth' => $auth]);
+        return view('profile.edit', ['auth' => $auth]);
     }
 
     public function update(Request $request)
@@ -63,7 +63,7 @@ class UserController extends Controller
     {
         $detailUser = User::where('slug', $slug)->first();
         $rentlog = RentLogs::with(['user', 'book'])->where('user_id', $detailUser->id)->get();
-        return view('detail-user', ['detailUser' => $detailUser, 'rentlog' => $rentlog]);
+        return view('users.detail', ['detailUser' => $detailUser, 'rentlog' => $rentlog]);
     }
 
     public function approve($slug)

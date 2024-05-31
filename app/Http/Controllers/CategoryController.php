@@ -7,16 +7,16 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $category = Category::all();
         $deletedCategory = Category::onlyTrashed()->get();
-        return view('category',['categories' => $category, 'deletedCategory' => $deletedCategory]);
+        return view('categories.category', ['categories' => $category, 'deletedCategory' => $deletedCategory]);
     }
 
     public function add()
     {
-        return view('category-add');       
+        return view('categories.add');
     }
 
     public function create(Request $request)
@@ -31,11 +31,11 @@ class CategoryController extends Controller
 
     public function edit($slug)
     {
-        $category = Category::where('slug',$slug)->first();
-        return view('category-edit',['category' => $category]);
+        $category = Category::where('slug', $slug)->first();
+        return view('categories.edit', ['category' => $category]);
     }
 
-    public function update(request $request,$slug)
+    public function update(request $request, $slug)
     {
         $validated = $request->validate([
             'name' => 'required|unique:categories|max:100',

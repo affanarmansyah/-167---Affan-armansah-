@@ -19,6 +19,8 @@ class Book extends Model
         'title',
         'slug',
         'cover',
+        'description',
+        'price',
     ];
 
     public function sluggable(): array

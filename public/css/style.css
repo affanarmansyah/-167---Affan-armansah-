@@ -19,12 +19,13 @@
     }
 
     .sidebar a:hover {
-        background-color: rgb(128, 91, 91);
+        color: black;
+        background-color: white;
     }
 
     .active {
         background-color: #000;
-        border-right: solid 8px orange;
+        border-right: solid 8px rgba(255, 255, 255, 0.612);
     }
 
     .card-data {

@@ -21,24 +21,9 @@
     background-position: center;
     backdrop-filter: blur(4px); /* Menambahkan efek blur */
   }
-
-  .card {
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-
   .card-body {
     padding: 2rem;
     background-color: rgba(207, 152, 88, 0.5); /* Transparansi putih pada card */
-  }
-
-  .btn-primary {
-    background-color: rgb(16, 108, 205); /* Warna tombol login */
-    border-color: #007bff;
-  }
-
-  .btn-primary:hover {
-    background-color: #0056b3; /* Warna tombol login saat dihover */
-    border-color: #0056b3;
   }
 </style>
   
@@ -49,6 +34,7 @@
       <div class="card">
         <div class="card-body">
           <form method="POST" action="">
+            @csrf
 
             @if (session('status'))
             <div class="alert alert-success">
@@ -66,7 +52,6 @@
             </div>
         @endif
 
-            @csrf
             <div class="">
               <label for="name" class="form-label">Username</label>
               <input type="text" class="form-control" id="username" name="username" value="{{old('username')}}">

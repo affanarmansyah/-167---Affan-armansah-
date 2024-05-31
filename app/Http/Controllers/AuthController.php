@@ -11,12 +11,12 @@ class AuthController extends Controller
 {
     public function login()
     {
-        return view('login');
+        return view('auth.login');
     }
 
     public function register()
     {
-        return view('register');
+        return view('auth.register');
     }
 
     function authenticating(Request $request)
@@ -50,9 +50,9 @@ class AuthController extends Controller
                 return redirect('profile');
             }
         }
-        Session::flash('status', 'failed');
-        Session::flash('message', 'Login invalid');
-        return redirect('login');
+        return back()->withErrors([
+            'username' => 'Login invalid',
+        ])->withInput($request->except('password'));
     }
 
     public function logout(Request $request)
@@ -75,7 +75,7 @@ class AuthController extends Controller
         User::create($request->all());
 
         Session::flash('status', 'succsess');
-        Session::flash('message', 'Register Succsess,Wait admin for approve');
+        Session::flash('message', 'Register Succsess,Wait admin for approval');
         return redirect('register');
     }
 }

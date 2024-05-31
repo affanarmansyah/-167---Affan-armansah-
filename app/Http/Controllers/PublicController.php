@@ -25,6 +25,6 @@ class PublicController extends Controller
 
         $book = $bookQuery->get();
 
-        return view('book-list', ['book' => $book, 'category' => $category, 'request' => $request]);
+        return view('books.list', ['book' => $book, 'category' => $category, 'request' => $request]);
     }
 }

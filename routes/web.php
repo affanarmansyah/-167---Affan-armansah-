@@ -72,8 +72,11 @@ Route::middleware(['only_admin'])->group(function () {
 
     Route::get('book-rent', [BookRentController::class, 'index']);
     Route::post('book-rent', [BookRentController::class, 'store']);
+    Route::get('rent-approve/{id}', [BookRentController::class, 'approve']);
+    Route::get('rent-unapprove/{id}', [BookRentController::class, 'unapprove']);
     Route::get('book-return', [BooksController::class, 'return']);
     Route::post('book-return', [BooksController::class, 'returnbook']);
+    Route::get('/get-book/{id}', [BooksController::class, 'getbook']);
 
     Route::get('rent-logs', [RentLogController::class, 'index']);
 });

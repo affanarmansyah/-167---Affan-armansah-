@@ -18,7 +18,8 @@ class RentLogs extends Model
         'user_id',
         'book_id',
         'rent_date',
-        'return_date'
+        'return_date',
+        'approval_status'
     ];
 
     /**
